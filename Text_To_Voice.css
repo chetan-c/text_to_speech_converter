@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+    box-sizing: border-box;
+}
+.hero{
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(42deg,#010758,#490D61);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+}
+.hero h1{
+    font-size: 25px;
+    font-weight: 100;
+    margin-top: -50px;
+    margin-bottom: 50px;
+}
+.hero h1 span{
+    color: #ff2950;
+
+}
+textarea{
+    height: 200px;
+    width: 400px;
+    background: #403d84;
+    color: #fff;
+    font-size: 15px;
+    border: 0;
+    outline: 0;
+    padding: 20px;
+    resize: none;
+
+}
+textarea::placeholder{
+    font-size: 20px;
+    color: #fff;
+}
+button{
+    height: 35px;
+    width: 70px;
+    margin-top: 29%;
+    padding: 3px 17px;
+    border-radius: 35px;
+    outline: 0;
+    cursor: pointer;
+}
+select{
+    flex: 1;
+    color: #fff;
+    background: #403d84;
+    height: 50px;
+    width: 250px;
+    padding: 0 10px;
+    outline: 0;
+    border: 0;
+    border-radius: 35px;
+}
