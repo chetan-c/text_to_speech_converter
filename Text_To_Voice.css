@@ -60,3 +60,18 @@ select{
     border: 0;
     border-radius: 35px;
 }
+
+#downloadButton {
+    height: 35px;
+    width: 150px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ff2950;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+    display: none;
+    cursor: pointer;
+}
