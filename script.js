@@ -2,10 +2,9 @@ let speech = new SpeechSynthesisUtterance();
 let voices = [];
 let voiceSelect = document.querySelector("select");
 
-// Populate available voices
 window.speechSynthesis.onvoiceschanged = () => {
     voices = window.speechSynthesis.getVoices();
-    speech.voice = voices[0]; // Set default voice
+    speech.voice = voices[0] || voices.find(v => v.lang.startsWith("en"));
 
     voices.forEach((voice, index) => {
         voiceSelect.options[index] = new Option(voice.name, index);
@@ -17,35 +16,29 @@ voiceSelect.addEventListener("change", () => {
 });
 
 document.querySelector("#speakButton").addEventListener("click", () => {
-    let textInput = document.querySelector("textarea").value;
-    if (textInput.trim() === "") {
-        alert("Please enter some text before speaking!");
-        return;
-    }
-    
-    speech.text = textInput;
+    speech.text = document.querySelector("textarea").value;
 
-    // Start speech synthesis
+    // Start Speech Synthesis
     window.speechSynthesis.speak(speech);
 
-    // Record and prepare audio for download
-    let audioContext = new AudioContext();
-    let destination = audioContext.createMediaStreamDestination();
-    let mediaRecorder = new MediaRecorder(destination.stream);
+    // Audio Recording and Download Logic
+    const audioChunks = [];
+    const audioContext = new AudioContext();
+    const destination = audioContext.createMediaStreamDestination();
+    const mediaRecorder = new MediaRecorder(destination.stream);
 
-    let audioChunks = [];
     speech.onstart = () => mediaRecorder.start();
     speech.onend = () => mediaRecorder.stop();
 
     mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
 
     mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const audioURL = URL.createObjectURL(audioBlob);
 
         const downloadButton = document.querySelector("#downloadButton");
         downloadButton.href = audioURL;
-        downloadButton.download = "speech.mp3";
-        downloadButton.style.display = "inline-block"; // Show button
+        downloadButton.download = "speech.webm"; // Safer format for mobile
+        downloadButton.style.display = "inline-block";
     };
 });
