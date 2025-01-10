@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text To <span>Voice</span>  </title>
+    <title>Text to Speech with Audio Download</title>
     <link rel="stylesheet" href="Text_To_Voice.css">
 </head>
 <body>
     <div class="hero">
-        <h1>Text To <span> Speech </span> </h1>
-        <textarea placeholder="Write Anything Here >>>"></textarea>
+        <h1>Text to <span>Speech</span></h1>
+        <textarea placeholder="Write anything here >>>"></textarea>
         <div class="row">
-            <select> </select>
-            <button>Speak </button>
+            <select></select>
+            <button id="speakButton">Speak</button>
+            <a id="downloadButton" style="display: none;" href="#">Download</a>
         </div>
     </div>
     <script src="script.js"></script>
