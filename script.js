@@ -33,7 +33,8 @@ document.querySelector("#speakButton").addEventListener("click", () => {
     mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
 
     mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
         const audioURL = URL.createObjectURL(audioBlob);
 
         const downloadButton = document.querySelector("#downloadButton");
