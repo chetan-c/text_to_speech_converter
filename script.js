@@ -1,57 +1,34 @@
 let speech = new SpeechSynthesisUtterance();
 let voices = [];
-const audioChunks = [];
 const voiceSelect = document.querySelector("select");
-const downloadButton = document.querySelector("#downloadButton");
+const speakButton = document.querySelector("#speakButton");
 
-// Load and populate available voices
-window.speechSynthesis.onvoiceschanged = () => {
-    voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith("en"));
-    voiceSelect.innerHTML = "";  // Clear existing options
-    voices.forEach((voice, index) => {
-        voiceSelect.options[index] = new Option(voice.name, index);
-    });
-    speech.voice = voices[0];  // Set default voice
-};
-
-// Set selected voice when user changes tone
-voiceSelect.addEventListener("change", () => {
-    speech.voice = voices[voiceSelect.value];
-});
-
-// Speak text and allow multiple button presses
-document.querySelector("#speakButton").addEventListener("click", () => {
-    const textInput = document.querySelector("textarea").value.trim();
-    if (!textInput) {
-        alert("Please enter text to speak.");
+function loadVoices() {
+    voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) {
+        setTimeout(loadVoices, 100);
         return;
     }
 
-    speech.text = textInput;
-    speech.voice = voices[voiceSelect.value];  // Ensure correct voice is set
-    window.speechSynthesis.speak(speech);
+    voiceSelect.innerHTML = "";
+    voices.forEach((voice, index) => {
+        voiceSelect.options[index] = new Option(voice.name, index);
+    });
+    speech.voice = voices[0];
+}
 
-    // Start recording audio for download
-    const audioContext = new AudioContext();
-    const destination = audioContext.createMediaStreamDestination();
-    const mediaRecorder = new MediaRecorder(destination.stream);
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
 
-    speech.onstart = () => {
-        mediaRecorder.start();
-    };
+voiceSelect.addEventListener("change", () => {
+    speech.voice = voices[parseInt(voiceSelect.value)];
+});
 
-    speech.onend = () => {
-        mediaRecorder.stop();
-    };
-
-    mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
-
-    mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-        const audioURL = URL.createObjectURL(audioBlob);
-
-        downloadButton.href = audioURL;
-        downloadButton.download = "speech.wav";
-        downloadButton.style.display = "block";
-    };
+speakButton.addEventListener("click", () => {
+    speech.text = document.querySelector("textarea").value.trim();
+    if (speech.text) {
+        window.speechSynthesis.speak(speech);
+    } else {
+        alert("Please enter text to speak.");
+    }
 });
